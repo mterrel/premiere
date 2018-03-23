@@ -2,11 +2,8 @@
 
 coverage/
 node_modules/
-src/
 test/
-typings/
 
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 
-tsconfig.json

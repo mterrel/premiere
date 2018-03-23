@@ -10,6 +10,7 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "build": "tsc && webpack",
+    "postinstall": "postinstall-build dist",
     "preversion": "npm test",
     "version": "npm run build && git add package.json",
     "postversion": "git push && git push --tags"
@@ -35,6 +36,7 @@
   "homepage": "https://pedsmoreira.github.io/premiere",
   "dependencies": {
     "axios": "^0.17.1",
+    "postinstall-build": "^5.0.1",
     "promise-cascade": "^0.1.2"
   },
   "devDependencies": {
@@ -49,6 +51,11 @@
     "unminified-webpack-plugin": "^1.2.0",
     "webpack": "^3.5.6"
   },
+  "buildDependencies": [
+    "typescript",
+    "unminified-webpack-plugin",
+    "webpack"
+  ],
   "jest": {
     "mapCoverage": true,
     "moduleFileExtensions": [
