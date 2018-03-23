@@ -142,47 +142,47 @@ export default class Model implements IModel {
     return result;
   }
 
-  static make(values: Hash<any>): Model {
-    return new this().set(values);
+  static make<T extends Model>(values: Hash<any>): T {
+    return new this().set(values) as T;
   }
 
-  static makeArray(valuesArray: Hash<any>[]): Model[] {
-    return valuesArray.map((values: Hash<any>) => this.make(values)) as Model[];
+  static makeArray<T extends Model>(valuesArray: Hash<any>[]): T[] {
+    return valuesArray.map((values: Hash<any>) => this.make(values)) as T[];
   }
 
   reload(): Promise<this> {
     return this.self.find(this.key) as Promise<this>;
   }
 
-  static find(key: any, options?: FetchOptions): Promise<Model> {
-    return this.store.get(key, options);
+  static find<T extends Model>(key: any, options?: FetchOptions): Promise<T> {
+    return this.store.get(key, options) as Promise<T>;
   }
 
-  static all(options?: FetchOptions): Promise<Model[]> {
-    return this.store.index(options);
+  static all<T extends Model>(options?: FetchOptions): Promise<T[]> {
+    return this.store.index(options) as Promise<T[]>;
   }
 
   create(options?: Options): Promise<this> {
     return this.self.create(this.map, options) as Promise<this>;
   }
 
-  static create(values: Hash<any>, options?: Options): Promise<Model> {
-    return this.store.create(values, options);
+  static create<T extends Model>(values: Hash<any>, options?: Options): Promise<T> {
+    return this.store.create(values, options) as Promise<T>;
   }
 
   update(options?: Options): Promise<this> {
     return this.self.update(this.key, this.map, options) as Promise<this>;
   }
 
-  static update(key: any, values: Hash<any>, options?: Options): Promise<Model> {
-    return this.store.update(key, values, options);
+  static update<T extends Model>(key: any, values: Hash<any>, options?: Options): Promise<T> {
+    return this.store.update(key, values, options) as Promise<T>;
   }
 
   save(options?: Options): Promise<this> {
     return this.self.save(this.map, options) as Promise<this>;
   }
 
-  static save(values: Hash<any>, options?: Options): Promise<Model> {
+  static save<T extends Model>(values: Hash<any>, options?: Options): Promise<T> {
     if (values[this.reflector.keyColumn]) {
       return this.update(values[this.reflector.keyColumn], values, options);
     }
