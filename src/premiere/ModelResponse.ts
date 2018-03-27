@@ -6,7 +6,8 @@ export interface CallbackResponse {
   data: Hash<any> | Hash<any>[];
 }
 
-export type Callback = (response: AxiosResponse) => CallbackResponse;
+export type ApiResponse = AxiosResponse;
+export type Callback = (response: ApiResponse) => CallbackResponse;
 
 export default class ModelResponse<T extends Model> {
   model: typeof Model;
