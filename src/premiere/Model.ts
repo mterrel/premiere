@@ -154,12 +154,12 @@ export default class Model implements IModel {
     return this.self.find(this.key) as Promise<this>;
   }
 
-  static find<T extends Model>(key: any, options?: FetchOptions): Promise<T> {
-    return this.store.get(key, options) as Promise<T>;
+  static find<T extends Model>(this: ModelConstructor<T>, key: any, options?: FetchOptions): Promise<T> {
+    return ((this as any) as typeof Model).store.get(key, options) as Promise<T>;
   }
 
-  static all<T extends Model>(options?: FetchOptions): Promise<T[]> {
-    return this.store.index(options) as Promise<T[]>;
+  static all<T extends Model>(this: ModelConstructor<T>, options?: FetchOptions): Promise<T[]> {
+    return ((this as any) as typeof Model).store.index(options) as Promise<T[]>;
   }
 
   create(options?: Options): Promise<this> {
@@ -239,4 +239,8 @@ export default class Model implements IModel {
   static act(options?: ActOptions): Promise<any> {
     return this.store.act(options);
   }
+}
+
+export interface ModelConstructor<T extends Model> {
+  new (...args: any[]): T;
 }
