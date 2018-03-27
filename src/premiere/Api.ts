@@ -1,5 +1,6 @@
 import Hash from "./Hash";
 import axios, { AxiosInstance } from "axios";
+import 'axios-debug-log';
 import { trailUrl } from "./helpers/UrlHelper";
 
 export class Api {
