@@ -7,7 +7,7 @@ export interface CallbackResponse {
 }
 
 export type ApiResponse = AxiosResponse;
-export type Callback = (response: ApiResponse) => CallbackResponse;
+export type Callback = (response: ApiResponse) => CallbackResponse | Promise<CallbackResponse>;
 
 export default class ModelResponse<T extends Model> {
   model: typeof Model;
@@ -20,24 +20,29 @@ export default class ModelResponse<T extends Model> {
     this.callback = callback;
   }
 
-  get data(): any {
+  get data(): Promise<any> {
     if (this.callback) {
-      return this.callback(this.response).data;
+      return Promise.resolve(this.callback(this.response)).then((resp) => {
+        return resp.data;
+      });
     }
 
-    return this.response.data;
+    return Promise.resolve(this.response.data);
   }
 
-  get asInstance(): T {
-    return this.model.make(this.data) as T;
+  get asInstance(): Promise<T> {
+    return this.data.then((data) => {
+      return this.model.make(data) as T;
+    });
   }
 
-  get asArray(): T[] {
-    let data = this.data;
-    if (!Array.isArray(data)) {
-      data = [data];
-    }
+  get asArray(): Promise<T[]> {
+    return this.data.then((data) => {
+      if (!Array.isArray(data)) {
+        data = [data];
+      }
 
-    return this.model.makeArray(data) as T[];
+      return this.model.makeArray(data) as T[];
+    });
   }
 }

@@ -70,14 +70,14 @@ export default class Store<T extends Model> extends Api {
 
   async create(values: Hash<any>, options: Options = {}): Promise<T> {
     const response = await this.http.post(buildUrl(options), values);
-    const instance = new ModelResponse<T>(this.model, response, options.callback).asInstance;
+    const instance = await new ModelResponse<T>(this.model, response, options.callback).asInstance;
     return this.cache.objects.set(instance.key, instance);
   }
 
   async update(key: any, values: Hash<any>, options: Options = {}): Promise<T> {
     const response = await this.http.put(buildUrl(options, key), values);
     const modelResponse = new ModelResponse<T>(this.model, response, options.callback);
-    return this.cache.objects.set(key, modelResponse.asInstance);
+    return this.cache.objects.set(key, await modelResponse.asInstance);
   }
 
   async destroy(key: T | any, options: Options = {}): Promise<void> {

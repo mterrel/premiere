@@ -150,8 +150,8 @@ export default class Model implements IModel {
     return valuesArray.map((values: Hash<any>) => this.make(values)) as T[];
   }
 
-  reload(): Promise<this> {
-    return this.self.find(this.key) as Promise<this>;
+  reload(options?: FetchOptions): Promise<this> {
+    return this.self.find(this.key, options) as Promise<this>;
   }
 
   static find<T extends Model>(this: ModelConstructor<T>, key: any, options?: FetchOptions): Promise<T> {
