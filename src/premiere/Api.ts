@@ -5,6 +5,7 @@ import { trailUrl } from "./helpers/UrlHelper";
 
 export class Api {
   private _base: string;
+  private _httpOptions: any = {};
 
   headers: Hash<string> = {};
 
@@ -51,8 +52,20 @@ export class Api {
     this.headers["X-CSRF-Token"] = token;
   }
 
+  get httpOptions(): any {
+    return Object.assign({}, this._httpOptions, {
+      baseURL: this.baseUrl,
+      headers: this.mixedHeaders
+    });
+  }
+
+  set httpOptions(opts: any) {
+    // Keep a copy.
+    this._httpOptions = Object.assign({}, opts);
+  }
+
   get http(): AxiosInstance {
-    return axios.create({ baseURL: this.baseUrl, headers: this.mixedHeaders });
+    return axios.create(this.httpOptions);
   }
 }
 
